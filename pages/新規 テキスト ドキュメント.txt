@@ -1,0 +1,41 @@
+export default function Home() {
+  return (
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+      <h1>DeepL 翻訳 Frame App</h1>
+      <p>ここがトップページです。</p>
+    </div>
+  );
+}
+import { useState } from 'react';
+
+export default function Home() {
+  const [text, setText] = useState('');
+  const [translated, setTranslated] = useState('');
+
+  const handleTranslate = async () => {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    const data = await res.json();
+    setTranslated(data.translation);
+  };
+
+  return (
+    <div style={{ padding: '2rem' }}>
+      <h1>DeepL 翻訳</h1>
+      <textarea
+        rows={4}
+        cols={50}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="翻訳したいテキストを入力"
+      />
+      <br />
+      <button onClick={handleTranslate}>翻訳する</button>
+      <h2>翻訳結果:</h2>
+      <p>{translated}</p>
+    </div>
+  );
+}
