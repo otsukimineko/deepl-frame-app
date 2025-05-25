@@ -1,3 +1,3 @@
 export async function GET() {
-  return new Response('Hello from /frame GET', { status: 200 });
+  return new Response("Hello from /frame GET");
 }
