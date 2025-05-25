@@ -1,0 +1,41 @@
+import { useState } from 'react';
+
+export default function Home() {
+  const [text, setText] = useState('');
+  const [translated, setTranslated] = useState('');
+  const [targetLang, setTargetLang] = useState('JA'); // デフォルト日本語
+
+  async function handleTranslate() {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, target_lang: targetLang }),
+    });
+    const data = await res.json();
+    setTranslated(data.translation);
+  }
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>DeepL 翻訳</h1>
+      <textarea
+        rows={4}
+        value={text}
+        onChange={e => setText(e.target.value)}
+        placeholder="翻訳したいテキストを入力"
+        style={{ width: '100%' }}
+      />
+      <br />
+      <label>翻訳先言語: </label>
+      <select value={targetLang} onChange={e => setTargetLang(e.target.value)}>
+        <option value="JA">日本語 (JA)</option>
+        <option value="EN">英語 (EN)</option>
+        <option value="ZH">中国語 (ZH)</option>
+      </select>
+      <br /><br />
+      <button onClick={handleTranslate}>翻訳する</button>
+      <h3>翻訳結果:</h3>
+      <div>{translated}</div>
+    </div>
+  );
+}

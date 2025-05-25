@@ -1,0 +1,38 @@
+import { useEffect, useState } from 'react';
+
+export default function TranslateFrame({ status }) {
+  const [translated, setTranslated] = useState('');
+
+  useEffect(() => {
+    if (!status?.text) return;
+
+    async function translate() {
+      try {
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: status.text,
+            target_lang: 'JA', // ここを変えれば英語や中国語もOK
+          }),
+        });
+
+        const data = await res.json();
+        setTranslated(data.translation);
+      } catch (e) {
+        setTranslated('翻訳に失敗しました');
+      }
+    }
+
+    translate();
+  }, [status?.text]);
+
+  return (
+    <div>
+      <h3>原文：</h3>
+      <p>{status?.text || '投稿がありません'}</p>
+      <h3>翻訳結果：</h3>
+      <p>{translated || '翻訳中...'}</p>
+    </div>
+  );
+}
