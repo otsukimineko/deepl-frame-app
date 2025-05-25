@@ -32,3 +32,7 @@ export async function POST(request) {
     ],
   });
 }
+
+export async function GET() {
+  return new Response('This is the frame API endpoint. Please use POST.', { status: 200 });
+}
