@@ -1,14 +1,13 @@
-// app/frame/route.js
-
 export async function GET() {
   return new Response("Hello from /frame GET");
 }
 
 export async function POST(req) {
-  const body = await req.json();
-  const input = body?.untrustedData?.inputText ?? 'No input';
-
   try {
+    const body = await req.json();
+    const input = body?.untrustedData?.inputText ?? 'No input';
+    const targetLang = body?.untrustedData?.targetLang ?? 'EN';
+
     const res = await fetch('https://api-free.deepl.com/v2/translate', {
       method: 'POST',
       headers: {
@@ -17,18 +16,17 @@ export async function POST(req) {
       },
       body: new URLSearchParams({
         text: input,
-        target_lang: 'EN', // 一時的に言語固定（まずは動作確認）
+        target_lang: targetLang,
       }),
     });
 
     const data = await res.json();
 
-    // DeepLのレスポンスをまるごと返す（デバッグ用）
-    return new Response(JSON.stringify(data), {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const translation = data?.translations?.[0]?.text ?? 'Translation failed';
 
+    return new Response(translation);
   } catch (error) {
-    return new Response(`Error: ${error.message}`, { status: 500 });
+    console.error('Translation error:', error);
+    return new Response('Internal Server Error', { status: 500 });
   }
 }
