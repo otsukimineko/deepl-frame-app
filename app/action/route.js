@@ -1,12 +1,10 @@
-// app/action/route.js
-
 export async function GET() {
   return new Response(
     JSON.stringify({
       name: "DeepL Translate",
-      icon: "translate", // 好きなアイコンに変更可（例: "globe", "book", "diamond"など）
+      icon: "translate", // 任意のアイコンに変更可能
       description: "Translate text using DeepL API",
-      aboutUrl: "https://deepl-frame-app.vercel.app", // 説明ページなど（任意）
+      aboutUrl: "https://deepl-frame-app.vercel.app/about",
       action: {
         type: "post",
         postUrl: "https://deepl-frame-app.vercel.app/frame"
