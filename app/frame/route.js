@@ -8,20 +8,27 @@ export async function POST(req) {
   const body = await req.json();
   const input = body?.untrustedData?.inputText ?? 'No input';
 
-  const res = await fetch('https://api-free.deepl.com/v2/translate', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
-    },
-    body: new URLSearchParams({
-      text: input,
-      target_lang: 'JA', // 日本語へ翻訳
-    }),
-  });
+  try {
+    const res = await fetch('https://api-free.deepl.com/v2/translate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
+      },
+      body: new URLSearchParams({
+        text: input,
+        target_lang: 'EN', // 一時的に言語固定（まずは動作確認）
+      }),
+    });
 
-  const data = await res.json();
-  const translation = data.translations?.[0]?.text ?? '翻訳失敗';
+    const data = await res.json();
 
-  return new Response(translation);
+    // DeepLのレスポンスをまるごと返す（デバッグ用）
+    return new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    return new Response(`Error: ${error.message}`, { status: 500 });
+  }
 }
