@@ -4,10 +4,10 @@ export async function GET() {
       name: "DeepL Translate",
       icon: "translate",
       description: "Translate text using DeepL API",
-      aboutUrl: "https://deepl-frame-app.vercel.app/about",
+      aboutUrl: "https://deepl-frame-app.vercel.app/about?v=2", // ←変更①
       action: {
         type: "post",
-        postUrl: "https://deepl-frame-app.vercel.app/api/translate" // ← 修正ここ
+        postUrl: "https://deepl-frame-app.vercel.app/api/translate?v=2" // ←変更②
       }
     }),
     {
