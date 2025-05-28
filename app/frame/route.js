@@ -8,7 +8,8 @@ export async function GET() {
       buttons: [
         { label: '翻訳する', action: 'post' }
       ],
-      postUrl: 'https://deepl-frame-app.vercel.app/api/translate'
+      postUrl: 'https://deepl-frame-app.vercel.app/api/translate?v=2'
+
     }),
     {
       headers: {
