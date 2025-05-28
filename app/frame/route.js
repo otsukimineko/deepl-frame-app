@@ -1,5 +1,3 @@
-// app/frame/route.js
-
 export async function GET() {
   return new Response(
     JSON.stringify({
@@ -14,13 +12,8 @@ export async function GET() {
     }),
     {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=utf-8'
       }
     }
   );
-}
-
-// ✅ ←これが必要！
-export async function POST() {
-  return new Response('Method Not Implemented Here', { status: 200 });
 }
