@@ -1,3 +1,4 @@
+// app/frame/route.js
 export async function GET() {
   return new Response(
     JSON.stringify({
@@ -11,9 +12,12 @@ export async function GET() {
       postUrl: 'https://deepl-frame-app.vercel.app/api/translate?v=2'
     }),
     {
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      }
+      headers: { 'Content-Type': 'application/json' }
     }
   );
+}
+
+export async function POST() {
+  // 必ずPOSTハンドラは空でも定義しておくこと
+  return new Response('Method Implemented Here', { status: 200 });
 }
