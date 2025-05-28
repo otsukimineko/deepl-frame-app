@@ -1,32 +1,18 @@
 export async function GET() {
-  return new Response("Hello from /frame GET");
-}
-
-export async function POST(req) {
-  try {
-    const body = await req.json();
-    const input = body?.untrustedData?.inputText ?? 'No input';
-    const targetLang = body?.untrustedData?.targetLang ?? 'EN';
-
-    const res = await fetch('https://api-free.deepl.com/v2/translate', {
-      method: 'POST',
+  return new Response(
+    JSON.stringify({
+      type: 'frame',
+      title: 'DeepL 翻訳 Frame',
+      icon: 'https://deepl-frame-app.vercel.app/icon.png',
+      buttons: [
+        { label: '翻訳する', action: 'post' }
+      ],
+      postUrl: 'https://deepl-frame-app.vercel.app/api/translate'
+    }),
+    {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
-      },
-      body: new URLSearchParams({
-        text: input,
-        target_lang: targetLang,
-      }),
-    });
-
-    const data = await res.json();
-
-    const translation = data?.translations?.[0]?.text ?? 'Translation failed';
-
-    return new Response(translation);
-  } catch (error) {
-    console.error('Translation error:', error);
-    return new Response('Internal Server Error', { status: 500 });
-  }
+        'Content-Type': 'application/json'
+      }
+    }
+  );
 }
